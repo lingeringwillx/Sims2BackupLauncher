@@ -22,7 +22,7 @@ This a simple script that backups your neighborhoods before starting the game.
 
 - **exceptions** is a list of the neighborhoods that you don't want to backup, seperated by commas.
 
-4- Launch **Sims2Backup.exe**, it will backup your neighborhood and then launch the Sims2RPC launcher if you have it, or the normal game executable if you don't.
+4- Launch **Sims2Backup.exe**, it will backup your neighborhoods and then launch the Sims2RPC launcher if you have it, or the normal game executable if you don't.
 
 **Note:** Don't rename the backups or their folder. The script depends on their names to figure out which one is the oldest.
 
