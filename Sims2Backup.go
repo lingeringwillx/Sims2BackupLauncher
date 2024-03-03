@@ -226,5 +226,5 @@ func createBackup(source string, destination string) error {
 
 func fileExists(fileName string) bool {
     _, err := os.Stat(fileName)
-    return !os.IsNotExist(err)
+    return !errors.Is(err, fs.ErrNotExist)
 }
