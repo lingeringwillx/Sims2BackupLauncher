@@ -10,7 +10,7 @@ This a simple script that backups your neighborhoods before starting the game.
 
 **Instructions:**
 
-1- Copy **Sims2Backup.exe** to **Fun with Pets\SP9\TSBin** (or Mansions and Gardens for the CD version).
+1- Copy the contents of the **TSBin** to **Fun with Pets\SP9\TSBin** (or Mansions and Gardens for the CD version).
 
 2- Copy the **Sims 2 Backups** folder to **Documents\EA Games**.
 
