@@ -116,7 +116,7 @@ func main() {
 			
 			for _, backup := range backups {
 				_, err := time.Parse("2006-01-02", backup.Name()[:10])
-				if err == nil && backup.Name()[10:] == ".7z" {
+				if err == nil && !backup.IsDir() {
 					filteredBackups = append(filteredBackups, backup)
 				}
 			}
@@ -214,7 +214,7 @@ func launchGame() {
 }
 
 func createBackup(source string, destination string) error {
-	output, err := exec.Command("powershell", ".//7zr.exe", "a", "\"" + destination + "\"", "\"" + source + "\"").CombinedOutput()
+	output, err := exec.Command("powershell", ".\\7zr.exe", "a", "-mx1", "\"" + destination + "\"", "\"" + source + "\"").CombinedOutput()
 	
 	if err != nil {
 		os.Remove(destination)
