@@ -2,11 +2,7 @@
 
 This a simple script that backups your neighborhoods before starting the game.
 
-**Requirements:**
-
-1- Windows 10 or higher.
-
-2- [7-Zip](https://www.7-zip.org/download.html) for extracting the backups. 
+**Requires:** Windows 10 or higher.
 
 **Instructions:**
 
