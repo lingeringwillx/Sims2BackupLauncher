@@ -214,7 +214,7 @@ func launchGame() {
 }
 
 func createBackup(source string, destination string) error {
-	output, err := exec.Command("powershell", ".\\7zr.exe", "a", "-mx1", "\"" + destination + "\"", "\"" + source + "\"").CombinedOutput()
+	output, err := exec.Command(".\\7zr.exe", "a", "-mx1", destination, source).CombinedOutput()
 	
 	if err != nil {
 		os.Remove(destination)
