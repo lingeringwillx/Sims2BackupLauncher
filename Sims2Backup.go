@@ -16,6 +16,16 @@ import (
 	"golang.org/x/sys/windows/registry"
 )
 
+//settings.txt
+const SETTINGS string = `#Backup every...
+backup_freq = 7 #days
+
+#Number of backups to keep (older backups will be deleted)
+number_of_backups = 3
+
+#Neighborhoods to NOT backup (seperate with commas)
+exceptions = Tutorial`
+
 func main() {
 	//section: get save and backup directories
 	keys, err := registry.OpenKey(registry.LOCAL_MACHINE, "SOFTWARE\\WOW6432Node\\EA GAMES\\The Sims 2", registry.QUERY_VALUE)
@@ -38,14 +48,25 @@ func main() {
 	backupPath := filepath.Join(userDirPath, "My Documents", "EA Games", "Sims 2 Backups")
 	
 	buf, err := os.ReadFile(filepath.Join(backupPath, "settings.txt"))
-	if err != nil {
+	if errors.Is(err, fs.ErrNotExist) {
+		err := os.Mkdir(backupPath, os.ModeDir)
+		if err != nil && !errors.Is(err, fs.ErrExist) {
+			backupFailed("Failed to create the Sims 2 Backups folder")
+		}
+		
+		err = os.WriteFile(filepath.Join(backupPath, "settings.txt"), []byte(SETTINGS), 666)
+		if err != nil {
+			backupFailed("Failed to create settings.txt")
+		}
+		
+	} else if err != nil {
 		backupFailed("Failed to read settings")
 	}
 	
 	//section: parse settings
 	freq := 7
 	nBackups := 3
-	var exceptions []string
+	exceptions := []string{"Tutorial"}
 	
 	s := string(buf)
 	lines := strings.Split(s, "\n")
