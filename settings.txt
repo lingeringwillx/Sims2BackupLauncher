@@ -4,5 +4,8 @@ backup_freq = 7 #days
 #Number of backups to keep (older backups will be deleted)
 number_of_backups = 3
 
+#Path to game launcher (optional)
+launcher_path = 
+
 #Neighborhoods to NOT backup (seperate with commas)
 exceptions = Tutorial
