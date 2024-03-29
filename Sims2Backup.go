@@ -24,17 +24,21 @@ backup_freq = 7 #days
 #Number of backups to keep (older backups will be deleted)
 number_of_backups = 3
 
+#Neighborhoods to NOT backup (seperate with commas)
+exceptions = Tutorial
+
 #Path to game launcher (optional)
 launcher_path = 
-
-#Neighborhoods to NOT backup (seperate with commas)
-exceptions = Tutorial`
+ 
+#Advanced: optional arguments to be passed to the launcher (seperate with spaces)
+args = `
 
 type Settings struct {
 	freq int
 	nBackups int
-	launcherPath string
 	exceptions []string
+	launcherPath string
+	args string
 }
 
 func main() {
@@ -55,7 +59,7 @@ func main() {
 		fmt.Print("\n")
 	}
 	
-	err = launchGame(settings.launcherPath)
+	err = launchGame(settings)
 	
 	if err != nil {
 		if errors.Is(err, fs.ErrNotExist) {
@@ -96,7 +100,7 @@ func getPaths() (string, string, error) {
 }
 
 func parseSettings(backupPath string) (Settings, error) {
-	settings := Settings{7, 3, "", []string{"Tutorial"}}
+	settings := Settings{7, 3, []string{"Tutorial"}, "", ""}
 	
 	buf, err := os.ReadFile(filepath.Join(backupPath, "settings.txt"))
 	
@@ -141,6 +145,9 @@ func parseSettings(backupPath string) (Settings, error) {
 				if err != nil {
 					fmt.Println("Failed to read backup frequency")
 					return settings, err
+					
+				} else if settings.freq < 0 {
+					fmt.Println("Backup frequency should be a positive number")
 				}
 				
 			} else if left == "number_of_backups" {
@@ -149,13 +156,19 @@ func parseSettings(backupPath string) (Settings, error) {
 				if err != nil {
 					fmt.Println("Failed to read the number of backups")
 					return settings, err
+					
+				} else if settings.nBackups <= 0 {
+					fmt.Println("Number of backups should be larger than zero")
 				}
+				
+			} else if left == "exceptions" {
+				settings.exceptions = strings.Split(right, ",")
 				
 			} else if left == "launcher_path" {
 				settings.launcherPath = right
-			
-			} else if left == "exceptions" {
-				settings.exceptions = strings.Split(right, ",")
+				
+			} else if(left == "args") {
+				settings.args = right
 			}
 		}
 	}
@@ -240,7 +253,7 @@ func createBackups(savePath string, backupPath string, settings Settings) error 
 				}
 				
 				//delete old backups
-				for i := settings.nBackups; i < len(backups); i++ {
+				for i := settings.nBackups - 1; i < len(backups); i++ {
 					os.Remove(filepath.Join(hoodBackupPath, backups[i].Name()))
 				}
 			}
@@ -250,27 +263,22 @@ func createBackups(savePath string, backupPath string, settings Settings) error 
 	return nil
 }
 
-func launchGame(launcherPath string) error {
+func launchGame(settings Settings) error {
 	launchers := []string{}
 	
-	if launcherPath == "" {
+	if settings.launcherPath == "" {
 		launchers = []string{"Sims2RPC.exe", "Sims2EP9RPC.exe", "Sims2EP9.exe"}
 	} else {
-		launchers = []string{launcherPath}
+		launchers = []string{settings.launcherPath}
 	}
 	
 	for _, launcher := range launchers {
-		fullPath, err := filepath.Abs(strings.Trim(launcher, "\""))
-		if(err != nil) {
-			return err
-		}
-		
-		if fileExists(fullPath) {
+		if fileExists(launcher) {
 			fmt.Println("Starting Game...\n")
 			
 			cmd := exec.Command("cmd", "")
 			cmd.SysProcAttr = &syscall.SysProcAttr {
-				CmdLine: "/c start /b \"\" \"" + fullPath + "\"",
+				CmdLine: "/c start /b \"\" \"" + launcher + "\" " + settings.args,
 			}
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
