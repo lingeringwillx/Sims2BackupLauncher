@@ -274,9 +274,9 @@ func launchGame(launcherPath string) error {
 			}
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
-			cmd.Run()
+			err := cmd.Run()
 			
-			return nil
+			return err
 		}
 	}
 	
