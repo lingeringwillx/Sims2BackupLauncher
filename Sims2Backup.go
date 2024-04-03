@@ -63,9 +63,10 @@ func main() {
 	
 	if err != nil {
 		if errors.Is(err, fs.ErrNotExist) {
-			fmt.Print("Game executable not found...")
+			printErr("Game executable not found...", err, "")
+			
 		} else {
-			fmt.Print(err)
+			printErr("Could not launch the game's executable...", err, "")
 		}
 		
 		fmt.Scanln()
@@ -76,20 +77,20 @@ func main() {
 func getPaths() (string, string, error) {
 	keys, err := registry.OpenKey(registry.LOCAL_MACHINE, "SOFTWARE\\WOW6432Node\\EA GAMES\\The Sims 2", registry.QUERY_VALUE)
 	if err != nil {
-		fmt.Println("Failed to find game save location")
+		printErr("Failed to find game save location", err, "")
 		return "", "", err
 	}
 	defer keys.Close()
 	
 	saveDir, _, err := keys.GetStringValue("DisplayName")
 	if err != nil {
-		fmt.Println("Failed to find game save location")
+		printErr("Failed to find game save location", err, "")
 		return "", "", err
 	}
 	
 	userDirPath, err := os.UserHomeDir()
 	if err != nil {
-		fmt.Println("Failed to find game save location")
+		printErr("Failed to find game save location", err, "")
 		return "", "", err
 	}
 	
@@ -101,25 +102,26 @@ func getPaths() (string, string, error) {
 
 func parseSettings(backupPath string) (Settings, error) {
 	settings := Settings{7, 3, []string{"Tutorial"}, "", ""}
+	settingsPath := filepath.Join(backupPath, "settings.txt")
 	
-	buf, err := os.ReadFile(filepath.Join(backupPath, "settings.txt"))
+	buf, err := os.ReadFile(settingsPath)
 	
 	if errors.Is(err, fs.ErrNotExist) {
 		err := os.Mkdir(backupPath, os.ModeDir)
 		if err != nil && !errors.Is(err, fs.ErrExist) {
-			fmt.Println("Failed to create the Sims 2 Backups folder")
+			printErr("Failed to create the Sims 2 Backups folder", err, backupPath)
 			return settings, err
 		}
 		
-		err = os.WriteFile(filepath.Join(backupPath, "settings.txt"), []byte(SETTINGS), 666)
+		err = os.WriteFile(settingsPath, []byte(SETTINGS), 666)
 		if err != nil {
-			fmt.Println("Failed to create settings.txt")
+			printErr("Failed to create settings.txt", err, settingsPath)
 		}
 		
 		return settings, err
 		
 	} else if err != nil {
-		fmt.Println("Failed to read settings")
+		printErr("Failed to read settings", err, settingsPath)
 		return settings, err
 	}
 	
@@ -143,22 +145,22 @@ func parseSettings(backupPath string) (Settings, error) {
 				settings.freq, err = strconv.Atoi(right)
 				
 				if err != nil {
-					fmt.Println("Failed to read backup frequency")
+					printErr("Failed to read backup frequency", err, "")
 					return settings, err
 					
 				} else if settings.freq < 0 {
-					fmt.Println("Backup frequency should be a positive number")
+					printErr("Backup frequency should be a positive number", err, "")
 				}
 				
 			} else if left == "number_of_backups" {
 				settings.nBackups, err = strconv.Atoi(right)
 				
 				if err != nil {
-					fmt.Println("Failed to read the number of backups")
+					printErr("Failed to read the number of backups", err, "")
 					return settings, err
 					
 				} else if settings.nBackups <= 0 {
-					fmt.Println("Number of backups should be larger than zero")
+					printErr("Number of backups should be larger than zero", err, "")
 				}
 				
 			} else if left == "exceptions" {
@@ -180,7 +182,7 @@ func createBackups(savePath string, backupPath string, settings Settings) error 
 	//loop over neighborhoods
 	hoodDirs, err := os.ReadDir(savePath)
 	if err != nil {
-		fmt.Println("Failed to find neighborhoods")
+		printErr("Failed to find neighborhoods", err, savePath)
 		return err
 	}
 	
@@ -191,7 +193,7 @@ func createBackups(savePath string, backupPath string, settings Settings) error 
 	if len(hoodDirs) > 0 {
 		err := os.Mkdir(backupPath, os.ModeDir)
 		if err != nil && !errors.Is(err, fs.ErrExist) {
-			fmt.Println("Could not create the backups folder")
+			printErr("Could not create the backups folder", err, backupPath)
 			return err
 		}
 	}
@@ -203,13 +205,13 @@ func createBackups(savePath string, backupPath string, settings Settings) error 
 		//filter and sort old backups
 		err := os.Mkdir(hoodBackupPath, os.ModeDir)
 		if err != nil && !errors.Is(err, fs.ErrExist) {
-			fmt.Println("Could not create the neighborhood's backup folder")
+			printErr("Could not create the neighborhood's backup folder", err, hoodBackupPath)
 			return err
 		}
 		
 		backups, err := os.ReadDir(hoodBackupPath)
 		if err != nil {
-			fmt.Println("Could not access the neighborhood's backups")
+			printErr("Could not access the neighborhood's backups", err, hoodBackupPath)
 			return err
 		}
 		
@@ -230,7 +232,7 @@ func createBackups(savePath string, backupPath string, settings Settings) error 
 			err := createBackup(hoodSavePath, newBackupPath)
 			
 			if err != nil {
-				fmt.Println("Failed to create backup")
+				printErr("Failed to create backup", err, newBackupPath)
 				return err
 			}
 			
@@ -239,7 +241,7 @@ func createBackups(savePath string, backupPath string, settings Settings) error 
 			lastBackup := backups[0]
 			lastBackupDate, err := time.Parse("2006-01-02", lastBackup.Name()[:10])
 			if err != nil {
-				fmt.Println("Failed to parse backup date")
+				printErr("Failed to parse backup date", err, "")
 				return err
 			}
 			
@@ -248,7 +250,7 @@ func createBackups(savePath string, backupPath string, settings Settings) error 
 				err = createBackup(hoodSavePath, newBackupPath)
 				
 				if err != nil {
-					fmt.Println("Failed to create backup")
+					printErr("Failed to create backup", err, newBackupPath)
 					return err
 				}
 				
@@ -300,6 +302,14 @@ func createBackup(source string, destination string) error {
 	}
 	
 	return err
+}
+
+func printErr(info string, err error, path string) {
+	fmt.Println(info)
+	fmt.Print("error: ")
+	fmt.Println(err)
+	
+	_ = path
 }
 
 //generic filter function
