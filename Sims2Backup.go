@@ -63,7 +63,7 @@ func main() {
 	
 	if err != nil {
 		if errors.Is(err, fs.ErrNotExist) {
-			printErr("Game executable not found...", err, "")
+			fmt.Println("Game executable not found...")
 			
 		} else {
 			printErr("Could not launch the game's executable...", err, "")
@@ -94,8 +94,8 @@ func getPaths() (string, string, error) {
 		return "", "", err
 	}
 	
-	savePath := filepath.Join(userDirPath, "My Documents", "EA Games", saveDir, "Neighborhoods")
-	backupPath := filepath.Join(userDirPath, "My Documents", "EA Games", "Sims 2 Backups")
+	savePath := filepath.Join(userDirPath, "Documents", "EA Games", saveDir, "Neighborhoods")
+	backupPath := filepath.Join(userDirPath, "Documents", "EA Games", "Sims 2 Backups")
 	
 	return savePath, backupPath, nil
 }
