@@ -164,7 +164,7 @@ func parseSettings(backupPath string) (Settings, error) {
 				}
 				
 			} else if left == "exceptions" {
-				settings.exceptions = strings.Split(right, ",")
+				settings.exceptions = strings.Split(strings.ReplaceAll(right, " ", ""), ",")
 				
 			} else if left == "launcher_path" {
 				settings.launcherPath = right
