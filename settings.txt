@@ -7,8 +7,17 @@ number_of_backups = 3
 #Neighborhoods to NOT backup (seperate with commas)
 exceptions = Tutorial
 
-#Enter path to make the program run your preferred launcher (optional)
+#Enter launcher file path to make the program run your preferred launcher (optional)
 launcher_path = 
 
 #Advanced: optional arguments to be passed to the launcher (seperate with spaces)
 args = 
+
+#Optional game save path (The Sims 2 folder), if the launcher is unable to find your save on its own
+save_path = 
+
+#Optional backup path if you want the backup to be saved in a different location
+backup_path = 
+
+#Optional extra path to save the backups to
+alt_backup_path = 

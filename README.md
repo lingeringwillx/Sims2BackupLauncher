@@ -18,8 +18,6 @@ This a simple script that backups your neighborhoods before starting the game.
 
 - **exceptions** is a list of the neighborhoods that you don't want to backup, seperated by commas.
 
-- **launcher_path** is an optional path to the launcher that you want to use if you want to use a luncher other than Sims2RPC or the default game's launcher.
-
 4- Launch **Sims2Backup.exe**. It will backup your neighborhoods and then launch *launcher_path* if it's specified in **settings.txt**, otherwise it will use the Sims2RPC launcher if you have it, or the normal game executable if you don't.
 
 **Note:** Don't rename the backups or their folder. The script depends on their names to figure out which one is the oldest.
