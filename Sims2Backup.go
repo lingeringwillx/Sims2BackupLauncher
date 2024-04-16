@@ -51,26 +51,22 @@ type Settings struct {
 }
 
 func main() {
-	savePath, backupPath, err := getPaths()
+	documentsPath, err := getDocumentsPath()
 	settings := Settings{}
 	var err2 error
 	
 	if err == nil {
-		settings, err = parseSettings(backupPath)
-		
-		if settings.savePath != "" {
-			savePath = settings.savePath
-		}
-		
-		if settings.backupPath != "" {
-			backupPath = settings.backupPath
-		}
+		settings, err = parseSettings(documentsPath)
 		
 		if err == nil {
-			err = createBackups(savePath, backupPath, settings)
+			savePath, backupPath, err := getPaths(documentsPath, settings)
 			
-			if settings.altBackupPath != "" {
-				err2 = createBackups(savePath, settings.altBackupPath, settings)
+			if err == nil {
+				err = createBackups(savePath, backupPath, settings)
+				
+				if settings.altBackupPath != "" {
+					err2 = createBackups(savePath, settings.altBackupPath, settings)
+				}
 			}
 		}
 	}
@@ -96,19 +92,18 @@ func main() {
 	}
 }
 
-func getPaths() (string, string, error) {
-	//find documents folder path
+func getDocumentsPath() (string, error) {
 	keys, err := registry.OpenKey(registry.CURRENT_USER, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", registry.QUERY_VALUE)
 	if err != nil {
 		printErr("Failed to find documents folder location", err, "")
-		return "", "", err
+		return "", err
 	}
 	defer keys.Close()
 	
 	documentsPath, _, err := keys.GetStringValue("Personal")
 	if err != nil {
 		printErr("Failed to find documents folder location", err, "")
-		return "", "", err
+		return "", err
 	}
 	
 	//resolve enviroment variables in path
@@ -122,43 +117,59 @@ func getPaths() (string, string, error) {
 				splitDocumentsPath[i] = resolvedPath
 			} else {
 				fmt.Println("error: Failed to resolve enviroment variable in path", documentsPath)
-				return "", "", errors.New("")
+				return "", errors.New("")
 			}
 		}
 	}
 	
 	documentsPath = filepath.Join(splitDocumentsPath...)
+	return documentsPath, nil
+}
+
+func getPaths(documentsPath string, settings Settings) (string, string, error) {
+	savePath := ""
+	backupPath := ""
 	
-	//find sims 2 save folder name
-	keys, err = registry.OpenKey(registry.LOCAL_MACHINE, "SOFTWARE\\WOW6432Node\\EA GAMES\\The Sims 2", registry.QUERY_VALUE)
-	if err != nil {
-		printErr("Failed to find game save location", err, "")
-		return "", "", err
+	if settings.savePath == "" {
+		keys, err := registry.OpenKey(registry.LOCAL_MACHINE, "SOFTWARE\\WOW6432Node\\EA GAMES\\The Sims 2", registry.QUERY_VALUE)
+		if err != nil {
+			printErr("Failed to find game save location", err, "")
+			return "", "", err
+		}
+		defer keys.Close()
+		
+		saveDir, _, err := keys.GetStringValue("DisplayName")
+		if err != nil {
+			printErr("Failed to find game save location", err, "")
+			return "", "", err
+		}
+		
+		savePath = filepath.Join(documentsPath, "EA Games", saveDir, "Neighborhoods")
+		
+	} else {
+		savePath = settings.savePath
 	}
-	defer keys.Close()
 	
-	saveDir, _, err := keys.GetStringValue("DisplayName")
-	if err != nil {
-		printErr("Failed to find game save location", err, "")
-		return "", "", err
+	if settings.backupPath == "" {
+		backupPath = filepath.Join(documentsPath, "EA Games", "Sims 2 Backups")
+	} else {
+		backupPath = settings.backupPath
 	}
-	
-	savePath := filepath.Join(documentsPath, "EA Games", saveDir, "Neighborhoods")
-	backupPath := filepath.Join(documentsPath, "EA Games", "Sims 2 Backups")
 	
 	return savePath, backupPath, nil
 }
 
-func parseSettings(backupPath string) (Settings, error) {
+func parseSettings(documentsPath string) (Settings, error) {
 	settings := Settings{7, 3, []string{"Tutorial"}, "", "", "", "", ""}
-	settingsPath := filepath.Join(backupPath, "settings.txt")
+	settingsFolderPath := filepath.Join(documentsPath, "EA Games", "Sims 2 Backups")
+	settingsPath := filepath.Join(settingsFolderPath, "settings.txt")
 	
 	buf, err := os.ReadFile(settingsPath)
 	
 	if errors.Is(err, fs.ErrNotExist) {
-		err := os.Mkdir(backupPath, os.ModeDir)
+		err := os.Mkdir(settingsPath, os.ModeDir)
 		if err != nil && !errors.Is(err, fs.ErrExist) {
-			printErr("Failed to create the Sims 2 Backups folder", err, backupPath)
+			printErr("Failed to create the Sims 2 Backups folder", err, settingsPath)
 			return settings, err
 		}
 		
@@ -213,7 +224,11 @@ func parseSettings(backupPath string) (Settings, error) {
 				}
 				
 			} else if left == "exceptions" {
-				settings.exceptions = strings.Split(strings.ReplaceAll(right, " ", ""), ",")
+				settings.exceptions = strings.Split(right, ",")
+				
+				for i, hood := range settings.exceptions {
+					settings.exceptions[i] = strings.TrimSpace(hood)
+				}
 				
 			} else if left == "launcher_path" {
 				settings.launcherPath = right
