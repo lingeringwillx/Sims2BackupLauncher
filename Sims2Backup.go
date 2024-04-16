@@ -167,9 +167,9 @@ func parseSettings(documentsPath string) (Settings, error) {
 	buf, err := os.ReadFile(settingsPath)
 	
 	if errors.Is(err, fs.ErrNotExist) {
-		err := os.Mkdir(settingsPath, os.ModeDir)
+		err := os.Mkdir(settingsFolderPath, os.ModeDir)
 		if err != nil && !errors.Is(err, fs.ErrExist) {
-			printErr("Failed to create the Sims 2 Backups folder", err, settingsPath)
+			printErr("Failed to create the Sims 2 Backups folder", err, settingsFolderPath)
 			return settings, err
 		}
 		
