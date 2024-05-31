@@ -70,6 +70,8 @@ func main() {
 			}
 		}
 	}
+    
+    time.Sleep(time.Second)
 	
 	if err != nil && err2 != nil {
 		fmt.Print("\nPress enter to start the game...")
@@ -122,6 +124,7 @@ func getDocumentsPath() (string, error) {
 		}
 	}
 	
+    splitDocumentsPath[0] += string(filepath.Separator)
 	documentsPath = filepath.Join(splitDocumentsPath...)
 	return documentsPath, nil
 }
