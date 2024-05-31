@@ -70,8 +70,8 @@ func main() {
 			}
 		}
 	}
-    
-    time.Sleep(time.Second)
+	
+	time.Sleep(time.Second)
 	
 	if err != nil && err2 != nil {
 		fmt.Print("\nPress enter to start the game...")
@@ -124,7 +124,7 @@ func getDocumentsPath() (string, error) {
 		}
 	}
 	
-    splitDocumentsPath[0] += string(filepath.Separator)
+	splitDocumentsPath[0] += string(filepath.Separator)
 	documentsPath = filepath.Join(splitDocumentsPath...)
 	return documentsPath, nil
 }
@@ -394,16 +394,16 @@ func printErr(info string, err error, path string) {
 
 //generic filter function
 func filter[T any](slice []T, f func(T) bool) []T {
-    var n []T
-    for _, e := range slice {
-        if f(e) {
-            n = append(n, e)
-        }
-    }
-    return n
+	var n []T
+	for _, e := range slice {
+		if f(e) {
+			n = append(n, e)
+		}
+	}
+	return n
 }
 
 func fileExists(fileName string) bool {
-    _, err := os.Stat(fileName)
-    return !errors.Is(err, fs.ErrNotExist)
+	_, err := os.Stat(fileName)
+	return !errors.Is(err, fs.ErrNotExist)
 }
