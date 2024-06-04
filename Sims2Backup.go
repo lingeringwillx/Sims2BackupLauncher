@@ -150,7 +150,7 @@ func getPaths(documentsPath string, settings Settings) (string, string, error) {
 		savePath = filepath.Join(documentsPath, "EA Games", saveDir, "Neighborhoods")
 		
 	} else {
-		savePath = settings.savePath
+		savePath = filepath.Join(settings.savePath, "Neighborhoods")
 	}
 	
 	if settings.backupPath == "" {
@@ -258,7 +258,7 @@ func createBackups(savePath string, backupPath string, settings Settings) error 
 	//loop over neighborhoods
 	hoodDirs, err := os.ReadDir(savePath)
 	if err != nil {
-		printErr("Failed to find neighborhoods", err, savePath)
+		printErr("Failed to find the neighborhoods", err, savePath)
 		return err
 	}
 	
