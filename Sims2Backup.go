@@ -53,6 +53,7 @@ type Settings struct {
 func main() {
 	documentsPath, err := getDocumentsPath()
 	settings := Settings{}
+	var savePath, backupPath string
 	var err2 error
 	
 	if err == nil {
@@ -60,7 +61,7 @@ func main() {
 	}
 	
 	if err == nil {
-		savePath, backupPath, err := getPaths(documentsPath, settings)
+		savePath, backupPath, err = getPaths(documentsPath, settings)
 	}
 	
 	if err == nil {
