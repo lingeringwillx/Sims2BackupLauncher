@@ -57,17 +57,17 @@ func main() {
 	
 	if err == nil {
 		settings, err = parseSettings(documentsPath)
+	}
+	
+	if err == nil {
+		savePath, backupPath, err := getPaths(documentsPath, settings)
+	}
+	
+	if err == nil {
+		err = createBackups(savePath, backupPath, settings)
 		
-		if err == nil {
-			savePath, backupPath, err := getPaths(documentsPath, settings)
-			
-			if err == nil {
-				err = createBackups(savePath, backupPath, settings)
-				
-				if settings.altBackupPath != "" {
-					err2 = createBackups(savePath, settings.altBackupPath, settings)
-				}
-			}
+		if settings.altBackupPath != "" {
+			err2 = createBackups(savePath, settings.altBackupPath, settings)
 		}
 	}
 	
