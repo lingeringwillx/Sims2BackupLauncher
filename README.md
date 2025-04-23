@@ -24,7 +24,7 @@ This a simple script that backups your neighborhoods before starting the game.
 
 - **save_path** is the path to the game's save folder.
 
-- **backup_path ** is where the files would be backed up.
+- **backup_path** is where the files would be backed up.
 
 4- Launch **Sims2BackupLauncher.exe**. It will backup your neighborhoods and then launch the file in *launcher_path*.
 
