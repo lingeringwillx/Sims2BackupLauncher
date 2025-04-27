@@ -20,7 +20,7 @@ This a simple script that backups your neighborhoods before starting the game.
 
 - **launcher_path** is the path to the game's launcher
 
-- **args** is any arguments to use with the launcher.
+- **args** is any arguments to pass to the launcher.
 
 - **save_path** is the path to the game's save folder.
 
