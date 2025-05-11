@@ -4,7 +4,7 @@ This a simple script that backups your neighborhoods before starting the game.
 
 **Requires:** Windows 10 or higher.
 
-**Instructions:**
+#### Instructions:
 
 1- Copy the contents of the **TSBin** to the folder of the last expansion pack. Typically **SP9** or **EP9**.
 
