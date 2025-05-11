@@ -17,29 +17,6 @@ import (
     "golang.org/x/sys/windows/registry"
 )
 
-//settings.txt
-const SETTINGS string = `# The number of days between backups.
-BackupFrequency = 7
-
-# Number of backups to keep. Older backups will be deleted.
-NumberOfBackups = 3
-
-# Neighborhoods that the launcher should NOT backup. Separate with commas.
-Exceptions = Tutorial
-
-# The path to the game's launcher.
-LauncherPath =
-
-# Optional arguments to be passed to the game's launcher. Separate with spaces.
-# Leave this empty if you don't understand what it does.
-Args =
-
-# The game's save location (The Sims 2 folder).
-SavePath =
-
-# Optional backup path if you want the backup to be saved in a different location.
-BackupPath = `
-
 type Settings struct {
     freq int
     nBackups int
@@ -108,27 +85,12 @@ func getDocumentsPath() (string, error) {
 
 func parseSettings(documentsPath string) (Settings, error) {
     settings := Settings{}
-    settingsFolderPath := filepath.Join(documentsPath, "Sims 2 Backups")
-    settingsPath := filepath.Join(settingsFolderPath, "settings.txt")
 
+    settingsPath := filepath.Join(documentsPath, "Sims 2 Backups", "settings.txt")
     buf, err := os.ReadFile(settingsPath)
 
-    if errors.Is(err, fs.ErrNotExist) {
-        err := os.Mkdir(settingsFolderPath, os.ModeDir)
-        if err != nil && !errors.Is(err, fs.ErrExist) {
-            printErr("Failed to create the Sims 2 Backups folder", err, settingsFolderPath)
-            return settings, err
-        }
-
-        err = os.WriteFile(settingsPath, []byte(SETTINGS), 666)
-        if err != nil {
-            printErr("Failed to create settings.txt", err, settingsPath)
-        }
-
-        return settings, err
-
-    } else if err != nil {
-        printErr("Failed to read settings", err, settingsPath)
+    if err != nil {
+        printErr("Failed to read the program's settings", err, settingsPath)
         return settings, err
     }
 
