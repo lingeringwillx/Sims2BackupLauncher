@@ -10,7 +10,8 @@ Exceptions = Tutorial
 # The path to the game's launcher.
 LauncherPath = 
 
-# Optional arguments to be passed to the game's launcher. Leave this empty if you don't understand what it does. Separate with spaces.
+# Optional arguments to be passed to the game's launcher. Separate with spaces.
+# Leave this empty if you don't understand what it does.
 Args = 
 
 # The game's save location (The Sims 2 folder).
