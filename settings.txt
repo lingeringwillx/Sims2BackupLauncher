@@ -1,20 +1,20 @@
-#Backup every...
-backup_freq = 7 #days
+# The number of days between backups.
+BackupFrequency = 7
 
-#Number of backups to keep (older backups will be deleted)
-number_of_backups = 3
+# Number of backups to keep. Older backups will be deleted.
+NumberOfBackups = 3
 
-#Neighborhoods to NOT backup (seperate with commas)
-exceptions = Tutorial
+# Neighborhoods that the launcher should NOT backup. Separate with commas.
+Exceptions = Tutorial
 
-#Enter launcher file path to make the program run your preferred launcher
-launcher_path = 
+# The path to the game's launcher.
+LauncherPath = 
 
-#Advanced: optional arguments to be passed to the launcher (seperate with spaces)
-args = 
+# Optional arguments to be passed to the game's launcher. Leave this empty if you don't understand what it does. Separate with spaces.
+Args = 
 
-#Game save path (The Sims 2 folder)
-save_path = 
+# The game's save location (The Sims 2 folder).
+SavePath = 
 
-#Optional backup path if you want the backup to be saved in a different location
-backup_path = 
+# Optional backup path if you want the backup to be saved in a different location.
+BackupPath = 

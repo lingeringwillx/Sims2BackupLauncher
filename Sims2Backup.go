@@ -18,26 +18,26 @@ import (
 )
 
 //settings.txt
-const SETTINGS string = `#Backup every...
-backup_freq = 7 #days
+const SETTINGS string = `# The number of days between backups.
+BackupFrequency = 7
 
-#Number of backups to keep (older backups will be deleted)
-number_of_backups = 3
+# Number of backups to keep. Older backups will be deleted.
+NumberOfBackups = 3
 
-#Neighborhoods to NOT backup (seperate with commas)
-exceptions = Tutorial
+# Neighborhoods that the launcher should NOT backup. Separate with commas.
+Exceptions = Tutorial
 
-#Path to game launcher
-launcher_path =
+# The path to the game's launcher.
+LauncherPath =
 
-#Advanced: optional arguments to be passed to the launcher (seperate with spaces)
-args =
+# Optional arguments to be passed to the game's launcher. Leave this empty if you don't understand what it does. Separate with spaces.
+Args =
 
-#Game save path (The Sims 2 folder)
-save_path =
+# The game's save location (The Sims 2 folder).
+SavePath =
 
-#Optional backup path if you want the backup to be saved in a different location
-backup_path = `
+# Optional backup path if you want the backup to be saved in a different location.
+BackupPath = `
 
 type Settings struct {
     freq int
@@ -135,10 +135,8 @@ func parseSettings(documentsPath string) (Settings, error) {
     lines := strings.Split(s, "\n")
 
     for _, line := range lines {
-        commentIndex := strings.Index(line, "#")
-
-        if commentIndex != -1 {
-            line = line[:commentIndex]
+        if strings.HasPrefix(line, "#") {
+            continue
         }
 
         left, right, found := strings.Cut(line, "=")
@@ -147,7 +145,7 @@ func parseSettings(documentsPath string) (Settings, error) {
             left = strings.TrimSpace(left)
             right = strings.TrimSpace(right)
 
-            if left == "backup_freq" {
+            if left == "BackupFrequency" {
                 settings.freq, err = strconv.Atoi(right)
 
                 if err != nil {
@@ -158,7 +156,7 @@ func parseSettings(documentsPath string) (Settings, error) {
                     printErr("Backup frequency should be a positive number", err, "")
                 }
 
-            } else if left == "number_of_backups" {
+            } else if left == "NumberOfBackups" {
                 settings.nBackups, err = strconv.Atoi(right)
 
                 if err != nil {
@@ -169,23 +167,23 @@ func parseSettings(documentsPath string) (Settings, error) {
                     printErr("Number of backups should be larger than zero", err, "")
                 }
 
-            } else if left == "exceptions" {
+            } else if left == "Exceptions" {
                 settings.exceptions = strings.Split(right, ",")
 
                 for i, hood := range settings.exceptions {
                     settings.exceptions[i] = strings.TrimSpace(hood)
                 }
 
-            } else if left == "launcher_path" {
+            } else if left == "LauncherPath" {
                 settings.launcherPath = right
 
-            } else if left == "args" {
+            } else if left == "Args" {
                 settings.args = right
 
-            } else if left == "save_path" {
+            } else if left == "SavePath" {
                 settings.savePath = right
 
-            } else if left == "backup_path" {
+            } else if left == "BackupPath" {
                 settings.backupPath = right
             }
         }
@@ -353,9 +351,4 @@ func filter[T any](slice []T, f func(T) bool) []T {
         }
     }
     return n
-}
-
-func fileExists(fileName string) bool {
-    _, err := os.Stat(fileName)
-    return !errors.Is(err, fs.ErrNotExist)
 }
