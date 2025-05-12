@@ -18,4 +18,5 @@ Args =
 SavePath = 
 
 # Optional backup path if you want the backup to be saved in a different location.
+# Default is Documents\Sims 2 Backups
 BackupPath = 

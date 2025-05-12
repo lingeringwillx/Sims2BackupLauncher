@@ -138,32 +138,52 @@ func parseSettings(documentsPath string) (Settings, error) {
                 }
 
             } else if left == "LauncherPath" {
-                settings.launcherPath = right
+                if right == "" {
+                    fmt.Println("error: Launcher path is not specified in settings.txt")
+                    fmt.Println(right)
+                    return settings, errors.New("")
+
+                } else if !fileExists(right) {
+                    fmt.Println("error: The launcher specified in settings.txt was not found")
+                    fmt.Println(right)
+                    return settings, errors.New("")
+
+                } else {
+                    settings.launcherPath = right
+                }
 
             } else if left == "Args" {
                 settings.args = right
 
             } else if left == "SavePath" {
-                settings.savePath = right
+                if right == "" {
+                    fmt.Println("error: The game's save location is not listed in settings.txt")
+                    fmt.Println(right)
+                    return settings, errors.New("")
+
+                } else if !fileExists(right) {
+                    fmt.Println("error: Save path was not found")
+                    fmt.Println(right)
+                    return settings, errors.New("")
+
+                } else {
+                    settings.savePath = filepath.Join(right, "Neighborhoods")
+                }
 
             } else if left == "BackupPath" {
-                settings.backupPath = right
+                if right == "" {
+                    settings.backupPath = filepath.Join(documentsPath, "Sims 2 Backups")
+
+                } else if !fileExists(right) {
+                    fmt.Println("error: Backup path was not found")
+                    fmt.Println(right)
+                    return settings, errors.New("")
+
+                } else {
+                    settings.backupPath = right
+                }
             }
         }
-    }
-
-    if settings.savePath == "" {
-        err = errors.New("The game's save location is not listed in settings.txt")
-        fmt.Print("error: ")
-        fmt.Println(err)
-        return settings, err
-
-    } else {
-        settings.savePath = filepath.Join(settings.savePath, "Neighborhoods")
-    }
-
-    if settings.backupPath == "" {
-        settings.backupPath = filepath.Join(documentsPath, "Sims 2 Backups")
     }
 
     return settings, nil
@@ -182,12 +202,6 @@ func createBackups(settings Settings) error {
     })
 
     if len(hoodDirs) > 0 {
-        err := os.Mkdir(settings.backupPath, os.ModeDir)
-        if err != nil && !errors.Is(err, fs.ErrExist) {
-            printErr("Could not create the backups folder", err, settings.backupPath)
-            return err
-        }
-
         fmt.Println("Backup path:", settings.backupPath)
     }
 
@@ -303,6 +317,11 @@ func exitIfErr(err error) {
         fmt.Print("\n")
         os.Exit(1)
     }
+}
+
+func fileExists(fileName string) bool {
+    _, err := os.Stat(fileName)
+    return !errors.Is(err, fs.ErrNotExist)
 }
 
 //generic filter function
