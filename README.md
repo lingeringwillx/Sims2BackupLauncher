@@ -6,7 +6,7 @@ This a simple script that backups your neighborhoods before starting the game.
 
 #### Instructions:
 
-1- Copy the contents of the **TSBin** to the folder of the last expansion pack. Typically **SP9** or **EP9**.
+1- Copy the **TSBin** folder to the folder of the last expansion pack in the game's installation. Typically **SP9** or **EP9**.
 
 2- Copy the **Sims 2 Backups** folder to the Documents folder.
 
