@@ -8,15 +8,15 @@ NumberOfBackups = 3
 Exceptions = Tutorial
 
 # The path to the game's launcher.
-LauncherPath = 
+LauncherPath =
 
 # Optional arguments to be passed to the game's launcher. Separate with spaces.
 # Leave this empty if you don't understand what it does.
-Args = 
+Arguments =
 
 # The game's save location (The Sims 2 folder).
-SavePath = 
+SavePath =
 
 # Optional backup path if you want the backup to be saved in a different location.
 # If left empty, they will be backed up to Documents\Sims 2 Backups
-BackupPath = 
+BackupPath =

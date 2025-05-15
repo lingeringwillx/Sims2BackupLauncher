@@ -152,7 +152,7 @@ func parseSettings(documentsPath string) (Settings, error) {
                     settings.launcherPath = right
                 }
 
-            } else if left == "Args" {
+            } else if left == "Arguments" {
                 settings.args = right
 
             } else if left == "SavePath" {
