@@ -1,0 +1,6 @@
+.vs
+bin
+*/bin
+*/obj
+*.csproj.user
+*.pubxml.user
