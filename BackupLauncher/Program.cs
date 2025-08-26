@@ -39,19 +39,33 @@ namespace BackupLauncher
             string settingsPath = Path.Join(AppDataPath, "BackupLauncher", "settings.ini");
 
             if (!File.Exists(settingsPath)) {
-                ProcessStartInfo proc = new ProcessStartInfo("BackupLauncherSettings.exe", "");
-                proc.UseShellExecute = true;
-                Process.Start(proc);
-                Environment.Exit(1);
+                try
+                {
+                    ProcessStartInfo process = new ProcessStartInfo("BackupLauncherSettings.exe", "");
+                    process.UseShellExecute = true;
+                    Process.Start(process);
+                    Environment.Exit(1);
+                }
+                catch (Exception ex)
+                {
+                    Exit("Config file was not found.\nFailed to start BackupLauncherSettings.exe", ex);
+                }
             }
 
-            Settings settings = new Settings(settingsPath);
+            Settings settings = null;
+
+            try
+            {
+                settings = new Settings(settingsPath);
+            }
+            catch (Exception ex)
+            {
+                Exit("Failed to read settings.ini", ex);
+            }
 
             if(!Directory.Exists(settings.savePath))
             {
-                Console.WriteLine("Save folder " + settings.launcherPath + "was not found");
-                Console.ReadKey();
-                Environment.Exit(1);
+                Exit("Save folder " + settings.savePath + "was not found");
             }
 
             if (settings.backupPath == "")
@@ -61,42 +75,33 @@ namespace BackupLauncher
 
                 if (!Directory.Exists(settings.backupPath))
                 {
-                    Directory.CreateDirectory(settings.backupPath);
+                    try
+                    {
+                        Directory.CreateDirectory(settings.backupPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        Exit("Failed to create " + settings.backupPath, ex);
+                    }
                 }
             }
 
             if (!Directory.Exists(settings.backupPath))
             {
-                Console.WriteLine("Backup folder " + settings.launcherPath + "was not found");
-                Console.ReadKey();
-                Environment.Exit(1);
+                Exit("Backup folder " + settings.backupPath + "was not found");
             }
 
-            bool ok = CreateBackups(settings);
-
-            if (!ok)
-            {
-                Console.ReadKey();
-                Environment.Exit(1);
-            }
+            CreateBackups(settings);
 
             if (!File.Exists(settings.launcherPath))
             {
-                Console.WriteLine("The launcher " + settings.launcherPath + "was not found");
-                Console.ReadKey();
-                Environment.Exit(1);
+                Exit("The launcher " + settings.launcherPath + "was not found");
             }
 
-            ok = LaunchGame(settings.launcherPath, settings.args);
-
-            if (!ok)
-            {
-                Console.ReadKey();
-                Environment.Exit(1);
-            }
+            LaunchGame(settings.launcherPath, settings.args);
         }
 
-        static bool CreateBackups(Settings settings)
+        static void CreateBackups(Settings settings)
         {
             //filter exceptions
             List<string> hoodPaths = Directory.GetDirectories(settings.savePath).ToList();
@@ -109,85 +114,109 @@ namespace BackupLauncher
 
                 if (!Directory.Exists(backupPath))
                 {
-                    Directory.CreateDirectory(backupPath);
+                    try
+                    {
+                        Directory.CreateDirectory(backupPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        Exit("Failed to create " + backupPath, ex);
+                    }
+                }
+
+                //check if a path is a valid backup
+                bool isBackup(string path)
+                {
+                    DateTime dateValue;
+                    string fileName = Path.GetFileName(path);
+                    string dateStr = fileName.Substring(0, 10);
+                    string fmt = "yyyy-MM-dd";
+                    CultureInfo culture = CultureInfo.InvariantCulture;
+                    DateTimeStyles style = DateTimeStyles.None;
+                    
+                    bool isDate = DateTime.TryParseExact(dateStr, fmt, culture, style, out dateValue);
+                    bool isZip = fileName.EndsWith(".zip");
+
+                    return isDate && isZip;
                 }
 
                 //get and sort backups
                 List<string> backups = Directory.GetFiles(backupPath).ToList();
+                backups = backups.Where(backup => isBackup(backup)).ToList();
                 backups.Sort();
 
                 //create backup
-                string newBackupPath = Path.Join(backupPath, DateTime.Now.ToString("yyyy-MM-dd")) + ".zip";
+                DateTime lastBackupDate = DateTime.MinValue;
 
-                DateTime lastBackupDate;
-
-                if(backups.Count > 0)
+                if (backups.Count > 0)
                 {
                     lastBackupDate = DateTime.ParseExact(Path.GetFileName(backups.Last()).Substring(0,10), "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                }
-                else
-                {
-                    lastBackupDate = DateTime.MinValue;
                 }
                     
                 if ((DateTime.Now - lastBackupDate).Days >= settings.backupFreq)
                 {
                     Console.WriteLine("Creating backup for " + Path.GetFileName(hoodPath) + "...");
-                    bool ok = CreateBackup(hoodPath, newBackupPath);
-
-                    if (ok)
-                    {
-                        backups.Add(newBackupPath);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Failed to create backup");
-                        return false;
-                    }
+                    string newBackupPath = Path.Join(backupPath, DateTime.Now.ToString("yyyy-MM-dd")) + ".zip";
+                    CreateBackup(hoodPath, newBackupPath);
+                    backups.Add(newBackupPath);
                 }
 
                 //delete old backups
                 for (int i = 0; i <  backups.Count - settings.nBackups; i++)
                 {
-                    File.Delete(backups[i]);
+                    try
+                    {
+                        File.Delete(backups[i]);
+                    }
+                    catch (Exception ex) {
+                        Exit("Failed to delete " + backups[i], ex);
+                    }
                 }
 
             }
 
             Console.WriteLine("");
-            return true;
         }
 
-        static bool CreateBackup(string folderPath, string backupPath)
+        static void CreateBackup(string folderPath, string backupPath)
         {
             try
             {
                 ZipFile.CreateFromDirectory(folderPath, backupPath, CompressionLevel.Fastest, true);
-                return true;
             }
-            catch(IOException)
+            catch (Exception ex)
             {
-                return false;
+                Exit("Failed to create backup for " + Path.GetFileName(folderPath), ex);
             }
         }
 
-        static bool LaunchGame(string launcherPath, string args)
+        static void LaunchGame(string launcherPath, string args)
         {
             Console.WriteLine("Starting the game...");
             Thread.Sleep(1000);
 
             try
             {
-                ProcessStartInfo proc = new ProcessStartInfo(launcherPath, args);
-                proc.UseShellExecute = true;
-                Process.Start(proc);
-                return true;
+                ProcessStartInfo process = new ProcessStartInfo(launcherPath, args);
+                process.UseShellExecute = true;
+                Process.Start(process);
             }
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine("Failed to launch the game");
-                return false;
+                Exit("Failed to launch the game", ex);
             }
+        }
+        static void Exit(string error, Exception? exception = null)
+        {
+            Console.WriteLine("\n" + error);
+
+            if (exception != null)
+            {
+                Console.WriteLine("\n" + exception.ToString());
+            }
+
+            Console.ReadKey();
+            Environment.Exit(1);
         }
     }
 }
