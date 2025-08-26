@@ -56,13 +56,13 @@
             backupEveryText.AutoSize = true;
             backupEveryText.Location = new Point(12, 9);
             backupEveryText.Name = "backupEveryText";
-            backupEveryText.Size = new Size(102, 21);
+            backupEveryText.Size = new Size(136, 21);
             backupEveryText.TabIndex = 0;
-            backupEveryText.Text = "Backup every";
+            backupEveryText.Text = "Backup Frequency";
             // 
             // backupFreqNumberBox
             // 
-            backupFreqNumberBox.Location = new Point(120, 7);
+            backupFreqNumberBox.Location = new Point(165, 7);
             backupFreqNumberBox.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             backupFreqNumberBox.Name = "backupFreqNumberBox";
             backupFreqNumberBox.Size = new Size(50, 29);
@@ -74,13 +74,13 @@
             numberBackupsText.AutoSize = true;
             numberBackupsText.Location = new Point(12, 44);
             numberBackupsText.Name = "numberBackupsText";
-            numberBackupsText.Size = new Size(202, 21);
+            numberBackupsText.Size = new Size(147, 21);
             numberBackupsText.TabIndex = 2;
-            numberBackupsText.Text = "Number of backups to keep";
+            numberBackupsText.Text = "Number of Backups";
             // 
             // nBackupsNumberBox
             // 
-            nBackupsNumberBox.Location = new Point(220, 42);
+            nBackupsNumberBox.Location = new Point(165, 42);
             nBackupsNumberBox.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             nBackupsNumberBox.Name = "nBackupsNumberBox";
             nBackupsNumberBox.Size = new Size(50, 29);
@@ -120,9 +120,9 @@
             argsText.AutoSize = true;
             argsText.Location = new Point(12, 115);
             argsText.Name = "argsText";
-            argsText.Size = new Size(169, 21);
+            argsText.Size = new Size(87, 21);
             argsText.TabIndex = 7;
-            argsText.Text = "(Advanced) Arguments";
+            argsText.Text = "Arguments";
             // 
             // backupTextBox
             // 
@@ -146,7 +146,7 @@
             // 
             hoodsBox.CheckOnClick = true;
             hoodsBox.FormattingEnabled = true;
-            hoodsBox.Location = new Point(209, 217);
+            hoodsBox.Location = new Point(137, 217);
             hoodsBox.Name = "hoodsBox";
             hoodsBox.Size = new Size(160, 124);
             hoodsBox.TabIndex = 10;
@@ -165,21 +165,21 @@
             hoodsText.AutoSize = true;
             hoodsText.Location = new Point(12, 217);
             hoodsText.Name = "hoodsText";
-            hoodsText.Size = new Size(191, 21);
+            hoodsText.Size = new Size(119, 21);
             hoodsText.TabIndex = 12;
-            hoodsText.Text = "Neighborhoods to backup";
+            hoodsText.Text = "Neighborhoods";
             // 
             // argsTextBox
             // 
-            argsTextBox.Location = new Point(187, 112);
+            argsTextBox.Location = new Point(137, 112);
             argsTextBox.Name = "argsTextBox";
-            argsTextBox.Size = new Size(200, 29);
+            argsTextBox.Size = new Size(500, 29);
             argsTextBox.TabIndex = 13;
             // 
             // daysText
             // 
             daysText.AutoSize = true;
-            daysText.Location = new Point(176, 9);
+            daysText.Location = new Point(221, 9);
             daysText.Name = "daysText";
             daysText.Size = new Size(42, 21);
             daysText.TabIndex = 14;
