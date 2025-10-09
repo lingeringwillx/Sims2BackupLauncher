@@ -104,6 +104,7 @@ namespace BackupLauncherSettings
             }
 
             settings.launcherPath = launcherTextBox.Text;
+            settings.args = argsTextBox.Text;
             settings.savePath = saveTextBox.Text;
             settings.backupPath = backupTextBox.Text;
 
@@ -184,6 +185,7 @@ BackupPath =";
             this.data["BackupSettings"]["NumberOfBackups"] = this.nBackups.ToString();
             this.data["BackupSettings"]["Exceptions"] = String.Join(",", this.exceptions);
             this.data["Paths"]["LauncherPath"] = this.launcherPath;
+            this.data["Paths"]["Arguments"] = this.args;
 
             if (Path.GetFileName(this.savePath) == "Neighborhoods")
             {
