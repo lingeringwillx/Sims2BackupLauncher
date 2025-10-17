@@ -20,9 +20,9 @@ namespace BackupLauncherSettings
                 backupFreqNumberBox.Value = settings.backupFreq;
                 nBackupsNumberBox.Value = settings.nBackups;
                 launcherTextBox.Text = settings.launcherPath;
+                argsTextBox.Text = settings.args;
                 saveTextBox.Text = settings.savePath;
                 backupTextBox.Text = settings.backupPath;
-                argsTextBox.Text = settings.args;
             }
             catch (Exception ex)
             {
