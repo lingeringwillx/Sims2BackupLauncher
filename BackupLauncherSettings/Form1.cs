@@ -22,6 +22,7 @@ namespace BackupLauncherSettings
                 launcherTextBox.Text = settings.launcherPath;
                 saveTextBox.Text = settings.savePath;
                 backupTextBox.Text = settings.backupPath;
+                argsTextBox.Text = settings.args;
             }
             catch (Exception ex)
             {
