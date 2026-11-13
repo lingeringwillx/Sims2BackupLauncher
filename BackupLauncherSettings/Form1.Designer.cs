@@ -54,91 +54,91 @@
             // backupEveryText
             // 
             backupEveryText.AutoSize = true;
-            backupEveryText.Location = new Point(12, 9);
+            backupEveryText.Location = new Point(11, 9);
             backupEveryText.Name = "backupEveryText";
-            backupEveryText.Size = new Size(136, 21);
+            backupEveryText.Size = new Size(128, 20);
             backupEveryText.TabIndex = 0;
             backupEveryText.Text = "Backup Frequency";
             // 
             // backupFreqNumberBox
             // 
-            backupFreqNumberBox.Location = new Point(165, 7);
+            backupFreqNumberBox.Location = new Point(156, 7);
             backupFreqNumberBox.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             backupFreqNumberBox.Name = "backupFreqNumberBox";
-            backupFreqNumberBox.Size = new Size(50, 29);
+            backupFreqNumberBox.Size = new Size(44, 27);
             backupFreqNumberBox.TabIndex = 1;
             backupFreqNumberBox.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // numberBackupsText
             // 
             numberBackupsText.AutoSize = true;
-            numberBackupsText.Location = new Point(12, 44);
+            numberBackupsText.Location = new Point(11, 42);
             numberBackupsText.Name = "numberBackupsText";
-            numberBackupsText.Size = new Size(147, 21);
+            numberBackupsText.Size = new Size(139, 20);
             numberBackupsText.TabIndex = 2;
             numberBackupsText.Text = "Number of Backups";
             // 
             // nBackupsNumberBox
             // 
-            nBackupsNumberBox.Location = new Point(165, 42);
+            nBackupsNumberBox.Location = new Point(156, 40);
             nBackupsNumberBox.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             nBackupsNumberBox.Name = "nBackupsNumberBox";
-            nBackupsNumberBox.Size = new Size(50, 29);
+            nBackupsNumberBox.Size = new Size(44, 27);
             nBackupsNumberBox.TabIndex = 3;
             nBackupsNumberBox.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // launcherText
             // 
             launcherText.AutoSize = true;
-            launcherText.Location = new Point(12, 80);
+            launcherText.Location = new Point(11, 76);
             launcherText.Name = "launcherText";
-            launcherText.Size = new Size(119, 21);
+            launcherText.Size = new Size(111, 20);
             launcherText.TabIndex = 4;
             launcherText.Text = "Game Launcher";
             // 
             // launcherTextBox
             // 
             launcherTextBox.BackColor = SystemColors.Window;
-            launcherTextBox.Location = new Point(137, 77);
+            launcherTextBox.Location = new Point(122, 73);
             launcherTextBox.Name = "launcherTextBox";
             launcherTextBox.ReadOnly = true;
-            launcherTextBox.Size = new Size(500, 29);
+            launcherTextBox.Size = new Size(445, 27);
             launcherTextBox.TabIndex = 5;
             // 
             // saveTextBox
             // 
             saveTextBox.BackColor = SystemColors.Window;
-            saveTextBox.Location = new Point(137, 147);
+            saveTextBox.Location = new Point(122, 140);
             saveTextBox.Name = "saveTextBox";
             saveTextBox.ReadOnly = true;
-            saveTextBox.Size = new Size(500, 29);
+            saveTextBox.Size = new Size(445, 27);
             saveTextBox.TabIndex = 6;
             saveTextBox.TextChanged += saveTextBox_TextChanged;
             // 
             // argsText
             // 
             argsText.AutoSize = true;
-            argsText.Location = new Point(12, 115);
+            argsText.Location = new Point(11, 110);
             argsText.Name = "argsText";
-            argsText.Size = new Size(87, 21);
+            argsText.Size = new Size(81, 20);
             argsText.TabIndex = 7;
             argsText.Text = "Arguments";
             // 
             // backupTextBox
             // 
             backupTextBox.BackColor = SystemColors.Window;
-            backupTextBox.Location = new Point(137, 182);
+            backupTextBox.Location = new Point(122, 173);
             backupTextBox.Name = "backupTextBox";
             backupTextBox.ReadOnly = true;
-            backupTextBox.Size = new Size(500, 29);
+            backupTextBox.Size = new Size(445, 27);
             backupTextBox.TabIndex = 8;
             // 
             // saveText
             // 
             saveText.AutoSize = true;
-            saveText.Location = new Point(12, 150);
+            saveText.Location = new Point(11, 143);
             saveText.Name = "saveText";
-            saveText.Size = new Size(91, 21);
+            saveText.Size = new Size(86, 20);
             saveText.TabIndex = 9;
             saveText.Text = "Save Folder";
             // 
@@ -146,50 +146,50 @@
             // 
             hoodsBox.CheckOnClick = true;
             hoodsBox.FormattingEnabled = true;
-            hoodsBox.Location = new Point(137, 217);
+            hoodsBox.Location = new Point(130, 206);
             hoodsBox.Name = "hoodsBox";
-            hoodsBox.Size = new Size(160, 124);
+            hoodsBox.Size = new Size(143, 114);
             hoodsBox.TabIndex = 10;
             // 
             // backupText
             // 
             backupText.AutoSize = true;
-            backupText.Location = new Point(12, 185);
+            backupText.Location = new Point(11, 176);
             backupText.Name = "backupText";
-            backupText.Size = new Size(108, 21);
+            backupText.Size = new Size(103, 20);
             backupText.TabIndex = 11;
             backupText.Text = "Backup Folder";
             // 
             // hoodsText
             // 
             hoodsText.AutoSize = true;
-            hoodsText.Location = new Point(12, 217);
+            hoodsText.Location = new Point(11, 207);
             hoodsText.Name = "hoodsText";
-            hoodsText.Size = new Size(119, 21);
+            hoodsText.Size = new Size(113, 20);
             hoodsText.TabIndex = 12;
             hoodsText.Text = "Neighborhoods";
             // 
             // argsTextBox
             // 
-            argsTextBox.Location = new Point(137, 112);
+            argsTextBox.Location = new Point(122, 107);
             argsTextBox.Name = "argsTextBox";
-            argsTextBox.Size = new Size(500, 29);
+            argsTextBox.Size = new Size(445, 27);
             argsTextBox.TabIndex = 13;
             // 
             // daysText
             // 
             daysText.AutoSize = true;
-            daysText.Location = new Point(221, 9);
+            daysText.Location = new Point(206, 9);
             daysText.Name = "daysText";
-            daysText.Size = new Size(42, 21);
+            daysText.Size = new Size(39, 20);
             daysText.TabIndex = 14;
             daysText.Text = "days";
             // 
             // launcherBrowseButton
             // 
-            launcherBrowseButton.Location = new Point(643, 75);
+            launcherBrowseButton.Location = new Point(572, 71);
             launcherBrowseButton.Name = "launcherBrowseButton";
-            launcherBrowseButton.Size = new Size(100, 31);
+            launcherBrowseButton.Size = new Size(89, 30);
             launcherBrowseButton.TabIndex = 15;
             launcherBrowseButton.Text = "Browse";
             launcherBrowseButton.UseVisualStyleBackColor = true;
@@ -197,9 +197,9 @@
             // 
             // saveBrowseButton
             // 
-            saveBrowseButton.Location = new Point(643, 145);
+            saveBrowseButton.Location = new Point(572, 138);
             saveBrowseButton.Name = "saveBrowseButton";
-            saveBrowseButton.Size = new Size(100, 31);
+            saveBrowseButton.Size = new Size(89, 30);
             saveBrowseButton.TabIndex = 16;
             saveBrowseButton.Text = "Browse";
             saveBrowseButton.UseVisualStyleBackColor = true;
@@ -207,9 +207,9 @@
             // 
             // backupBrowseButton
             // 
-            backupBrowseButton.Location = new Point(643, 182);
+            backupBrowseButton.Location = new Point(572, 173);
             backupBrowseButton.Name = "backupBrowseButton";
-            backupBrowseButton.Size = new Size(100, 31);
+            backupBrowseButton.Size = new Size(89, 30);
             backupBrowseButton.TabIndex = 17;
             backupBrowseButton.Text = "Browse";
             backupBrowseButton.UseVisualStyleBackColor = true;
@@ -217,9 +217,9 @@
             // 
             // saveButton
             // 
-            saveButton.Location = new Point(643, 407);
+            saveButton.Location = new Point(572, 388);
             saveButton.Name = "saveButton";
-            saveButton.Size = new Size(100, 31);
+            saveButton.Size = new Size(89, 30);
             saveButton.TabIndex = 18;
             saveButton.Text = "Save";
             saveButton.UseVisualStyleBackColor = true;
@@ -227,9 +227,9 @@
             // 
             // backupLauncherSettings
             // 
-            AutoScaleDimensions = new SizeF(9F, 21F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(757, 452);
+            ClientSize = new Size(673, 430);
             Controls.Add(saveButton);
             Controls.Add(backupBrowseButton);
             Controls.Add(saveBrowseButton);
